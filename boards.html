@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Discussion boards — Sender Chain</title>
+<!-- Kept out of search results: real user identities (verified email
+     + phone) sit behind this gate, so it shouldn't be indexed even
+     though robots.txt also disallows the path as a second layer. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="seal">SC</span>
+      <strong>Sender Chain</strong>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Framework</a>
+      <a href="index.html#newsletter">Newsletter</a>
+      <a href="boards.html" class="current">Discussion boards</a>
+    </nav>
+    <span id="board-session-badge" style="display:none" class="pill verified">Verified &middot; <span id="session-identity"></span></span>
+  </div>
+</header>
+
+<!-- ===================== VERIFICATION GATE ===================== -->
+<section id="verify-gate">
+  <div class="wrap">
+    <div class="gate">
+      <div class="seal-big">SC</div>
+      <h2>Verify to join the discussion</h2>
+      <p class="sub">Sender Chain's own boards run on the trust model we're proposing: every post is tied to a verified email and phone number, no exceptions.</p>
+
+      <div class="step-track">
+        <span class="seg"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span>
+      </div>
+
+      <!-- Step 1: email input -->
+      <div class="auth-panel" id="step-1">
+        <form id="email-form">
+          <div class="field light">
+            <label for="email-input">Work or personal email</label>
+            <input type="email" id="email-input" placeholder="you@organization.com" required>
+          </div>
+          <button class="btn verified block" type="submit">Send email code</button>
+        </form>
+      </div>
+
+      <!-- Step 2: email OTP -->
+      <div class="auth-panel" id="step-2">
+        <p class="sub">Enter the 6-digit code sent to <strong id="email-sent-to"></strong></p>
+        <div class="otp-row" id="email-otp">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+        </div>
+        <p class="resend" id="email-otp-status"></p>
+        <div class="mock-note"><strong>Prototype only:</strong> there's no real mail server here, so the code is shown instead of emailed: <strong id="mock-email-code"></strong>. In production this is delivered via a transactional email provider and never rendered in the page.</div>
+      </div>
+
+      <!-- Step 3: phone input -->
+      <div class="auth-panel" id="step-3">
+        <form id="phone-form">
+          <div class="field light">
+            <label for="phone-input">Mobile number</label>
+            <input type="tel" id="phone-input" placeholder="+1 555 010 1234" required>
+          </div>
+          <button class="btn verified block" type="submit">Send SMS code</button>
+        </form>
+      </div>
+
+      <!-- Step 4: phone OTP -->
+      <div class="auth-panel" id="step-4">
+        <p class="sub">Enter the 6-digit code texted to <strong id="phone-sent-to"></strong></p>
+        <div class="otp-row" id="phone-otp">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+          <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+        </div>
+        <p class="resend" id="phone-otp-status"></p>
+        <div class="mock-note"><strong>Prototype only:</strong> no real SMS provider is wired up, so the code is shown instead of texted: <strong id="mock-phone-code"></strong>. In production this comes from a provider like Twilio Verify, rate-limited per number.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BOARD APP (post-verification) ===================== -->
+<section id="board-app" style="display:none; padding-top: 40px;">
+  <div class="wrap">
+    <div class="board-shell">
+      <aside class="board-side">
+        <div class="side-title">Boards</div>
+        <ul>
+          <li><a href="#" class="active">Protocol &amp; cryptography <span class="count">128</span></a></li>
+          <li><a href="#">Governance &amp; standards body <span class="count">64</span></a></li>
+          <li><a href="#">Carrier &amp; platform adoption <span class="count">41</span></a></li>
+          <li><a href="#">Regulatory strategy <span class="count">29</span></a></li>
+          <li><a href="#">Introduce yourself <span class="count">87</span></a></li>
+        </ul>
+        <div class="side-title" style="margin-top:24px;">Account</div>
+        <ul>
+          <li><a href="#" id="sign-out">Sign out</a></li>
+        </ul>
+      </aside>
+
+      <div class="board-main">
+        <div class="board-head">
+          <div>
+            <h1>Protocol &amp; cryptography</h1>
+            <p>Key management, revocation design, and real-time verification latency.</p>
+          </div>
+        </div>
+
+        <div class="composer">
+          <form id="composer-form">
+            <textarea id="composer-text" placeholder="Post to this board — for example, a question about OCSP-style revocation at carrier scale…" required></textarea>
+            <div class="row">
+              <span class="hint">Posts run through automated moderation before publishing. Clear violations are removed instantly; borderline posts wait for a human review.</span>
+              <button class="btn verified small" type="submit">Post</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="thread-list">
+          <div class="thread">
+            <div class="meta">
+              <span class="id-chip"><span class="dot"></span>m.alvarez@carrierlabs.io</span>
+              <span>&middot;</span><span>2 hours ago</span>
+              <span>&middot;</span><span class="pill verified">Verified sender</span>
+            </div>
+            <h3>How does revocation checking stay under 100ms at SMS volume?</h3>
+            <p>STIR/SHAKEN never had to solve real-time revocation, only attestation. If Sender Chain wants OCSP-style checks per message, what's the caching strategy for carriers pushing tens of thousands of messages a second?</p>
+            <div class="stats"><span>14 replies</span><span>203 views</span></div>
+          </div>
+          <div class="thread">
+            <div class="meta">
+              <span class="id-chip"><span class="dot"></span>priya.k@openmsg.org</span>
+              <span>&middot;</span><span>5 hours ago</span>
+              <span>&middot;</span><span class="pill verified">Verified sender</span>
+            </div>
+            <h3>Key rotation for individual senders, not just organizations</h3>
+            <p>CAs mostly issue to orgs with dedicated ops teams. What does rotation look like for a solo developer or small nonprofit sender who forgets to renew? Grace period, or hard cutoff?</p>
+            <div class="stats"><span>9 replies</span><span>151 views</span></div>
+          </div>
+          <div class="thread">
+            <div class="meta">
+              <span class="id-chip"><span class="dot"></span>d.oyelaran@trustmesh.dev</span>
+              <span>&middot;</span><span>1 day ago</span>
+              <span>&middot;</span><span class="pill verified">Verified sender</span>
+            </div>
+            <h3>Cross-jurisdiction root trust — who audits the auditors?</h3>
+            <p>WebTrust audits CAs for browsers. Is the plan a similar independent audit body for Sender Chain roots, and how does that hold up across US/EU/APAC regulatory differences?</p>
+            <div class="stats"><span>21 replies</span><span>340 views</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="fine">SENDER CHAIN — PROTOTYPE BUILD, NOT A DEPLOYED CA</span>
+    <span class="fine"><a href="index.html">&larr; Back to framework</a></span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>
+  // Reflect verified state in the top bar once VerifyGate reveals the board.
+  const obs = new MutationObserver(() => {
+    const app = document.getElementById("board-app");
+    if (app.style.display !== "none") {
+      document.getElementById("board-session-badge").style.display = "inline-flex";
+    }
+  });
+  obs.observe(document.getElementById("board-app"), { attributes: true, attributeFilter: ["style"] });
+</script>
+</body>
+</html>

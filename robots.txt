@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /boards.html
+Disallow: /boards/
+
+# The discussion boards also carry a page-level "noindex" meta tag,
+# since well-behaved crawlers honor that even if they ignore this file.
