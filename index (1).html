@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>America Choices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181410;
+    --union:#1E3A5F;
+    --union-deep:#122A44;
+    --brick:#B7362C;
+    --brick-deep:#8C2921;
+    --brass:#C9A227;
+    --parchment:#F3ECD8;
+    --paper:#FBF7EC;
+    --line: rgba(24,20,16,0.18);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background: var(--parchment);
+    color: var(--ink);
+    font-family:'Libre Franklin', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:inherit;}
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  :focus-visible{
+    outline:3px solid var(--brick);
+    outline-offset:3px;
+  }
+
+  /* ===== TOP RIBBON ===== */
+
+  .ribbon{
+    background: var(--union);
+    color: var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    text-align:center;
+    padding:9px 20px;
+  }
+
+  .ribbon span{ color: var(--brass); }
+
+  /* ===== HERO / NAMEPLATE ===== */
+
+  .hero{
+    position:relative;
+    padding: 64px 0 0;
+    overflow:hidden;
+  }
+
+  .hero-inner{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+    position:relative;
+  }
+
+  .badge{
+    position:absolute;
+    top:8px;
+    right:28px;
+    width:108px;
+    height:108px;
+    border-radius:50%;
+    border:3px solid var(--brass);
+    background: var(--paper);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform: rotate(-9deg);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color: var(--union);
+    line-height:1.5;
+    padding:6px;
+  }
+
+  .badge strong{
+    display:block;
+    color: var(--brick);
+    font-size:11px;
+    letter-spacing:0.1em;
+  }
+
+  .poster-title{
+    position:relative;
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    font-size: clamp(52px, 12vw, 148px);
+    line-height:0.86;
+    letter-spacing:0.01em;
+    color: var(--ink);
+    z-index:1;
+  }
+
+  .poster-title::before{
+    content: attr(data-text);
+    position:absolute;
+    left:7px;
+    top:7px;
+    color: var(--brick);
+    z-index:-1;
+  }
+
+  .tagline{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color: var(--union-deep);
+    margin-top:20px;
+    padding-bottom:44px;
+    max-width:60ch;
+  }
+
+  .stripe-divider{
+    height:14px;
+    width:100%;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--union) 0px, var(--union) 22px,
+      var(--paper) 22px, var(--paper) 30px,
+      var(--brick) 30px, var(--brick) 52px,
+      var(--paper) 52px, var(--paper) 60px
+    );
+  }
+
+  /* ===== INTRO ===== */
+
+  .intro{
+    padding: 58px 0 24px;
+  }
+
+  .intro-grid{
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap:48px;
+    align-items:end;
+  }
+
+  .intro h2{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    font-size: clamp(26px, 4vw, 42px);
+    line-height:1.05;
+    color: var(--union-deep);
+    letter-spacing:0.005em;
+  }
+
+  .intro p{
+    font-size:16.5px;
+    color: rgba(24,20,16,0.82);
+    max-width:46ch;
+  }
+
+  /* ===== PLANKS SECTION ===== */
+
+  .planks{
+    padding: 56px 0 90px;
+  }
+
+  .plank-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:28px;
+  }
+
+  .plank{
+    background: var(--paper);
+    border:3px solid var(--ink);
+    padding: 36px 34px 40px;
+    position:relative;
+  }
+
+  .plank-one{ border-top:10px solid var(--brick); }
+  .plank-two{ border-top:10px solid var(--union); }
+
+  .plank-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:16px;
+  }
+
+  .plank-one .plank-eyebrow{ color: var(--brick); }
+  .plank-two .plank-eyebrow{ color: var(--union); }
+
+  .plank h3{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    font-size:32px;
+    letter-spacing:0.01em;
+    color: var(--ink);
+    margin-bottom:12px;
+  }
+
+  .plank > p.lead{
+    font-size:15.5px;
+    color: rgba(24,20,16,0.78);
+    margin-bottom:28px;
+    max-width:42ch;
+  }
+
+  /* --- Ballot stub (mailing list) --- */
+
+  .ballot{
+    background: var(--parchment);
+    border-top:3px dashed var(--brass);
+    padding-top:24px;
+    position:relative;
+  }
+
+  .ballot::before{
+    content:'★ SIGN THE ROLL';
+    position:absolute;
+    top:-13px;
+    left:0;
+    background: var(--paper);
+    padding:0 10px 0 0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    color: var(--brass);
+  }
+
+  .field-label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color: var(--union-deep);
+    margin-bottom:8px;
+  }
+
+  .field-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:16px;
+  }
+
+  input[type="text"], input[type="email"]{
+    flex:1;
+    font-family:'Libre Franklin', sans-serif;
+    font-size:15px;
+    padding:11px 12px;
+    border:2px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    border-radius:2px;
+  }
+
+  .zip-row{
+    max-width:140px;
+  }
+
+  .btn{
+    font-family:'Libre Franklin', sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    background: var(--brick);
+    color: var(--paper);
+    border:2px solid var(--ink);
+    padding:14px 22px;
+    cursor:pointer;
+    border-radius:2px;
+    transition: background 0.15s ease, transform 0.12s ease;
+    width:100%;
+  }
+
+  .btn:hover{
+    background: var(--union);
+    transform: skewX(-2deg);
+  }
+
+  .btn:active{
+    transform: translateY(1px);
+  }
+
+  .fine-print{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color: rgba(24,20,16,0.55);
+    margin-top:14px;
+    letter-spacing:0.02em;
+  }
+
+  .confirm-msg{
+    display:none;
+    margin-top:16px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color: var(--brick-deep);
+    border-left:3px solid var(--brick);
+    padding-left:10px;
+  }
+
+  .confirm-msg.show{
+    display:block;
+  }
+
+  /* --- Bulletin board (discussion) --- */
+
+  .topic-list{
+    list-style:none;
+    border-top:2px solid var(--ink);
+  }
+
+  .topic-list li{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    align-items:baseline;
+    transition: background 0.12s ease;
+  }
+
+  .topic-list li:hover{
+    background: rgba(30,58,95,0.06);
+  }
+
+  .topic-list .t-name::before{
+    content:'★ ';
+    color: var(--brass);
+  }
+
+  .topic-list .t-name{
+    font-size:16px;
+    font-weight:600;
+  }
+
+  .topic-list .t-meta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color: rgba(24,20,16,0.5);
+    white-space:nowrap;
+    letter-spacing:0.04em;
+  }
+
+  .new-topic-btn{
+    margin-top:22px;
+    background: var(--paper);
+    border:2px solid var(--ink);
+    color: var(--ink);
+    font-family:'Libre Franklin', sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:13px 20px;
+    cursor:pointer;
+    border-radius:2px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .new-topic-btn:hover{
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .compose-box{
+    display:none;
+    margin-top:20px;
+    background: var(--parchment);
+    border:2px solid var(--ink);
+    padding:20px;
+  }
+
+  .compose-box.show{
+    display:block;
+  }
+
+  .compose-box textarea{
+    width:100%;
+    font-family:'Libre Franklin', sans-serif;
+    font-size:15px;
+    padding:11px 12px;
+    border:2px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    resize:vertical;
+    min-height:70px;
+    border-radius:2px;
+    margin-bottom:12px;
+  }
+
+  /* ===== FOOTER ===== */
+
+  footer{
+    background: var(--union-deep);
+    color: var(--paper);
+    padding: 30px 0 42px;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+
+  footer span.star{ color: var(--brass); margin:0 10px; }
+
+  /* ===== RESPONSIVE ===== */
+
+  @media (max-width: 760px){
+    .badge{ position:static; margin:0 0 20px; transform:rotate(-6deg); }
+    .intro-grid{ grid-template-columns:1fr; gap:20px; }
+    .plank-grid{ grid-template-columns:1fr; }
+    .plank{ padding:30px 22px 34px; }
+    .field-row{ flex-direction:column; }
+    .zip-row{ max-width:100%; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="ribbon">Est. 2026 &nbsp;·&nbsp; <span>All Voices Welcome</span> &nbsp;·&nbsp; Cedar Park &amp; Beyond</div>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="badge"><strong>Vol. I</strong>No. 1<br>Est. 2026</div>
+      <h1 class="poster-title" data-text="AMERICA CHOICES">AMERICA<br>CHOICES</h1>
+      <div class="tagline" id="today-date-line">Where Americans gather to decide, </div>
+    </div>
+    <div class="stripe-divider"></div>
+  </header>
+
+  <section class="intro">
+    <div class="wrap">
+      <div class="intro-grid">
+        <h2>A front porch for the conversations about THE INTERNET and identities matter.</h2>
+        <p>Sign up to stay informed, or step into the discussion. Two ways in — pick the one that fits how you want to show up.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="planks">
+    <div class="wrap">
+      <div class="plank-grid">
+
+        <!-- MAILING LIST -->
+        <div class="plank plank-one">
+          <div class="plank-eyebrow">★ Area One</div>
+          <h3>Join the Mailing List</h3>
+          <p class="lead">Get the short version, delivered when there's something worth reading. No noise, no spam — just the notices that matter.</p>
+
+          <form class="ballot" id="mailing-form">
+            <label class="field-label" for="name">Name</label>
+            <div class="field-row">
+              <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <label class="field-label" for="email">Email</label>
+            <div class="field-row">
+              <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            <label class="field-label" for="zip">ZIP (optional)</label>
+            <div class="field-row zip-row">
+              <input type="text" id="zip" placeholder="78613" inputmode="numeric" maxlength="10">
+            </div>
+            <button type="submit" class="btn">Sign Up</button>
+            <div class="fine-print">We'll never sell your information. Unsubscribe any time.</div>
+            <div class="confirm-msg" id="mailing-confirm">✓ You're on the list. Welcome aboard.</div>
+          </form>
+        </div>
+
+        <!-- DISCUSSION -->
+        <div class="Area-two">
+          <div class="plank-eyebrow">★ Area Two</div>
+          <h3>Join the Discussion</h3>
+          <p class="lead">Bring your view, hear someone else's. Civil, direct, and open to anyone willing to listen as much as they speak.</p>
+
+          <ul class="topic-list" id="topic-list">
+            <li>
+              <span class="t-name">What's the one local issue nobody's talking about?</span>
+              <span class="t-meta">14 replies</span>
+            </li>
+            <li>
+              <span class="t-name">Property tax relief — what's actually working?</span>
+              <span class="t-meta">27 replies</span>
+            </li>
+            <li>
+              <span class="t-name">Roads, growth, and Cedar Park's next decade</span>
+              <span class="t-meta">9 replies</span>
+            </li>
+          </ul>
+
+          <button class="new-topic-btn" id="new-topic-btn" type="button">Start a Discussion</button>
+
+          <div class="compose-box" id="compose-box">
+            <label class="field-label" for="topic-title">Topic Title</label>
+            <div class="field-row">
+              <input type="text" id="topic-title" placeholder="What do you want to talk about?">
+            </div>
+            <label class="field-label" for="topic-body">First Post</label>
+            <textarea id="topic-body" placeholder="Say what's on your mind..."></textarea>
+            <button class="btn" id="post-topic-btn" type="button" style="width:auto;">Post It</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    America Choices <span class="star">★</span> A Community Gathering Place <span class="star">★</span> Built for the ones who show up
+  </footer>
+
+<script>
+  // Discussion: reveal compose box
+  var newTopicBtn = document.getElementById('new-topic-btn');
+  var composeBox = document.getElementById('compose-box');
+  newTopicBtn.addEventListener('click', function(){
+    composeBox.classList.toggle('show');
+    if(composeBox.classList.contains('show')){
+      document.getElementById('topic-title').focus();
+    }
+  });
+
+  // Mailing list form (front-end only — no backend wired up)
+  document.getElementById('mailing-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var confirmMsg = document.getElementById('mailing-confirm');
+    confirmMsg.classList.add('show');
+    this.querySelectorAll('input').forEach(function(i){ i.value=''; });
+  });
+
+  // Discussion: post new topic to the top of the list (session only)
+  document.getElementById('post-topic-btn').addEventListener('click', function(){
+    var title = document.getElementById('topic-title').value.trim();
+    if(!title) return;
+    var list = document.getElementById('topic-list');
+    var li = document.createElement('li');
+    li.innerHTML = '<span class="t-name">' + title.replace(/</g,'&lt;') + '</span><span class="t-meta">0 replies · just now</span>';
+    list.insertBefore(li, list.firstChild);
+    document.getElementById('topic-title').value = '';
+    document.getElementById('topic-body').value = '';
+    composeBox.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
