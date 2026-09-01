@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sender Passport — A Trusted Identity for Every Message</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#182238;
+    --ink-soft:#3c4a68;
+    --paper:#ECE7D8;
+    --paper-raised:#F5F1E6;
+    --paper-tint:#E5E0CE;
+    --line:#B7AE93;
+    --seal:#8B2F35;
+    --seal-dark:#6E2229;
+    --seal-tint:#F1E1DE;
+    --verified:#31593F;
+    --verified-soft:#DCE6DA;
+    --gold:#9C7A34;
+    --shadow: 0 18px 40px rgba(24,34,56,0.14);
+    --shadow-soft: 0 10px 24px rgba(24,34,56,0.10);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+
+  .guilloche{
+    position:absolute; inset:0; pointer-events:none; opacity:0.16;
+    background-image:
+      repeating-radial-gradient(circle at 12% 20%, transparent 0 6px, var(--line) 6.4px 6.6px, transparent 7px 22px),
+      repeating-radial-gradient(circle at 88% 78%, transparent 0 6px, var(--line) 6.4px 6.6px, transparent 7px 22px);
+    mix-blend-mode:multiply;
+  }
+
+  .perforation{
+    height:20px; position:relative; z-index:2;
+    background-image: radial-gradient(circle, var(--paper) 3px, transparent 3.4px);
+    background-size: 22px 20px; background-position: center;
+  }
+  .perforation.on-dark{ background-image: radial-gradient(circle, var(--ink) 3px, transparent 3.4px); }
+  .perforation.on-raised{ background-image: radial-gradient(circle, var(--paper-raised) 3px, transparent 3.4px); }
+
+  a{color:inherit;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(236,231,216,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; max-width:1180px; margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700; font-size:19px;
+    letter-spacing:0.01em; display:flex; align-items:center; gap:10px;
+  }
+  .wordmark .mark{
+    width:26px; height:26px; border:1.5px solid var(--ink); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono';
+    font-size:11px; font-weight:500;
+  }
+  .nav-links{display:flex; align-items:center; gap:28px; font-size:14.5px;}
+  .nav-links a{text-decoration:none; color:var(--ink-soft); transition:color .15s;}
+  .nav-links a:hover{color:var(--ink);}
+  .btn-charter{
+    border:1px solid var(--ink); padding:9px 18px; border-radius:var(--radius);
+    font-size:13.5px; letter-spacing:0.02em; text-decoration:none; color:var(--ink);
+    font-weight:500; transition:all .18s;
+  }
+  .btn-charter:hover{background:var(--ink); color:var(--paper);}
+
+  .hero{position:relative; overflow:hidden; padding:88px 0 64px; background:var(--paper);}
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:center;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--seal); display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--seal);}
+  .eyebrow-sub{
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    font-weight:600; color:var(--ink-soft); margin:-14px 0 22px 36px;
+  }
+  h1.headline{
+    font-family:'Fraunces', serif; font-weight:600; font-size:clamp(36px,4.6vw,58px);
+    line-height:1.04; letter-spacing:-0.01em; margin:0 0 20px;
+  }
+  h1.headline em{font-style:italic; font-weight:500; color:var(--seal-dark);}
+  .hero-tagline{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:600; font-size:36pt;
+    line-height:1.1; color:var(--seal-dark); margin:0 0 22px; letter-spacing:0.01em;
+  }
+  .hero p.lede{
+    font-size:17.5px; line-height:1.6; color:var(--ink-soft); max-width:520px; margin:0 0 30px;
+  }
+
+  .form-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius);
+    padding:22px 24px; box-shadow:var(--shadow); max-width:480px;
+  }
+  .form-card .label{
+    font-family:'IBM Plex Mono'; font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin-bottom:10px; display:block;
+  }
+  .form-row{display:flex; gap:10px;}
+  .form-row input[type=email]{
+    flex:1; padding:13px 14px; border:1px solid var(--line); border-radius:var(--radius);
+    background:#fff; font-family:'IBM Plex Sans'; font-size:14.5px; color:var(--ink);
+  }
+  .form-row input[type=email]:focus{outline:2px solid var(--seal); outline-offset:1px;}
+  .form-row button{
+    background:var(--ink); color:var(--paper); border:none; padding:0 22px; border-radius:var(--radius);
+    font-size:14px; font-weight:500; letter-spacing:0.02em; cursor:pointer; transition:background .15s;
+    white-space:nowrap;
+  }
+  .form-row button:hover{background:var(--seal-dark);}
+  .form-fineprint{font-size:12.5px; color:var(--ink-soft); margin-top:10px;}
+
+  .hero-graphic{position:relative; display:flex; align-items:center; justify-content:center; height:360px;}
+  .hero-graphic svg{position:absolute; inset:0; width:100%; height:100%; overflow:visible;}
+  .flight-dash{ stroke-dasharray:6 8; animation:dashMove 3.5s linear infinite; }
+  @keyframes dashMove{ to{ stroke-dashoffset:-140; } }
+  .plane-fly{ offset-rotate:auto; animation:planeMove 3.5s linear infinite; }
+  @keyframes planeMove{
+    0%{ offset-distance:0%; }
+    100%{ offset-distance:100%; }
+  }
+  .sunburst{ animation:sunspin 60s linear infinite; transform-origin:center; }
+  @keyframes sunspin{ to{ transform:rotate(360deg); } }
+  .stamp-group{
+    transform:rotate(-9deg) scale(0.7); opacity:0; transform-origin:center;
+    animation:stampDown 0.7s cubic-bezier(.2,.9,.3,1.2) 0.5s forwards;
+  }
+  @keyframes stampDown{
+    0%{transform:rotate(-9deg) scale(2.1); opacity:0;}
+    60%{opacity:1;}
+    100%{transform:rotate(-9deg) scale(1); opacity:1;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flight-dash, .plane-fly, .sunburst{animation:none;}
+    .stamp-group{animation:none; transform:rotate(-9deg) scale(1); opacity:1;}
+  }
+  .stamp-text-svg{ font-family:'IBM Plex Mono', monospace; }
+
+  .film-section{padding:80px 0; background:var(--paper-raised); position:relative;}
+  .section-head{max-width:640px; margin:0 auto 46px; text-align:center;}
+  .section-eyebrow{
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--seal); margin-bottom:14px; display:flex; align-items:center; gap:8px; justify-content:center;
+  }
+  h2.section-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:clamp(28px,3.4vw,38px);
+    line-height:1.15; margin:0 0 14px;
+  }
+  .section-sub{color:var(--ink-soft); font-size:16px; line-height:1.6;}
+
+  .doc-frame{
+    max-width:860px; margin:0 auto; border:1px solid var(--line); background:var(--paper);
+    border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;
+    transition:box-shadow .2s, transform .2s;
+  }
+  .doc-frame:hover{ box-shadow:0 24px 48px rgba(24,34,56,0.18); transform:translateY(-2px); }
+  .doc-frame-top{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:14px 22px; border-bottom:1px dashed var(--line); font-family:'IBM Plex Mono'; font-size:11.5px;
+    color:var(--ink-soft); letter-spacing:0.04em;
+  }
+  .video-shell{
+    position:relative; aspect-ratio:16/9; background:linear-gradient(135deg, #232f4d, #101728);
+    display:flex; align-items:center; justify-content:center; cursor:pointer; overflow:hidden;
+  }
+  .video-shell .guilloche{opacity:0.1; mix-blend-mode:screen;}
+  .video-shell .globe-deco{ position:absolute; right:-40px; bottom:-60px; opacity:0.25; }
+  .play-btn{
+    width:78px; height:78px; border-radius:50%; background:rgba(245,241,230,0.95);
+    display:flex; align-items:center; justify-content:center; transition:transform .18s;
+    box-shadow:0 8px 24px rgba(0,0,0,0.35); position:relative; z-index:1;
+  }
+  .video-shell:hover .play-btn{transform:scale(1.08);}
+  .video-caption{
+    position:absolute; bottom:20px; left:22px; color:#F5F1E6; font-family:'IBM Plex Mono';
+    font-size:12px; letter-spacing:0.06em; z-index:1;
+  }
+  .video-caption strong{display:block; font-family:'Fraunces'; font-size:19px; font-weight:600; letter-spacing:0; margin-top:4px;}
+  .doc-frame-bottom{
+    padding:18px 22px; display:flex; justify-content:space-between; align-items:center;
+    font-size:13px; color:var(--ink-soft);
+  }
+  .runtime-chip{
+    font-family:'IBM Plex Mono'; border:1px solid var(--line); padding:4px 10px; border-radius:20px; font-size:11.5px;
+  }
+
+  .film-grid{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:56px; align-items:center;
+  }
+  .film-grid .section-head{max-width:none; margin:0; text-align:left;}
+  .film-grid .section-eyebrow{ justify-content:flex-start; }
+  .film-grid .doc-frame{max-width:none; margin:0;}
+
+  .pillars{padding:88px 0; background:var(--paper); position:relative;}
+  .pillar-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .pillar{
+    padding:36px 30px; position:relative; background:var(--paper-raised);
+    border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow-soft);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .pillar:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .pillar-icon{
+    width:56px; height:56px; border-radius:50%; background:var(--seal-tint);
+    display:flex; align-items:center; justify-content:center; margin-bottom:20px;
+    color:var(--seal-dark);
+  }
+  .pillar-entry{
+    font-family:'IBM Plex Mono'; font-size:11px; color:var(--seal); letter-spacing:0.1em;
+    margin-bottom:14px;
+  }
+  .pillar h3{
+    font-family:'Fraunces', serif; font-size:22px; font-weight:600; margin:0 0 12px;
+  }
+  .pillar p{font-size:14.5px; line-height:1.65; color:var(--ink-soft); margin:0;}
+
+  .boards{padding:88px 0; background:var(--ink); position:relative; overflow:hidden;}
+  .boards::before{
+    content:''; position:absolute; inset:0; opacity:0.05; pointer-events:none;
+    background-image: repeating-radial-gradient(circle at 20% 30%, transparent 0 6px, #fff 6.3px 6.5px, transparent 7px 24px);
+  }
+  .boards .section-title, .boards .section-sub{ color:var(--paper-raised); }
+  .boards .section-eyebrow{ color:#D8A79B; }
+  .boards .section-sub{ color:rgba(245,241,230,0.65); }
+  .board-panel{
+    border:1px solid rgba(245,241,230,0.18); border-radius:var(--radius); overflow:hidden; background:rgba(245,241,230,0.04);
+    color:var(--paper-raised); box-shadow:0 20px 44px rgba(0,0,0,0.28); position:relative; z-index:1;
+  }
+  .board-panel-head{
+    display:flex; justify-content:space-between; align-items:center; padding:20px 28px;
+    border-bottom:1px solid rgba(245,241,230,0.16); font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:0.08em;
+  }
+  .verify-badge{
+    display:inline-flex; align-items:center; gap:8px; background:var(--verified-soft); color:var(--verified);
+    padding:5px 12px; border-radius:20px; font-size:11.5px; font-weight:600; letter-spacing:0.03em;
+  }
+  .verify-badge svg{flex-shrink:0;}
+  .board-list{list-style:none; margin:0; padding:0;}
+  .board-row{
+    display:grid; grid-template-columns:40px 1.3fr 2fr auto; gap:18px; align-items:center;
+    padding:18px 28px; border-bottom:1px solid rgba(245,241,230,0.1); font-size:14.5px;
+    transition:background .15s;
+  }
+  .board-row:hover{ background:rgba(245,241,230,0.05); }
+  .board-row:last-child{border-bottom:none;}
+  .board-icon{
+    width:34px; height:34px; border-radius:50%; border:1px solid rgba(245,241,230,0.3);
+    display:flex; align-items:center; justify-content:center; color:#D8A79B; flex-shrink:0;
+  }
+  .board-row .name{font-weight:600; font-family:'Fraunces'; font-size:17px;}
+  .board-row .topics{color:rgba(245,241,230,0.65); font-size:13.5px;}
+  .board-row .count{
+    font-family:'IBM Plex Mono'; font-size:12px; color:rgba(245,241,230,0.55); text-align:right; white-space:nowrap;
+  }
+  .boards-cta{display:flex; justify-content:center; margin-top:38px; position:relative; z-index:1;}
+  .btn-primary{
+    background:var(--seal); color:#fff; border:none; padding:15px 34px; border-radius:var(--radius);
+    font-size:15px; font-weight:500; letter-spacing:0.02em; cursor:pointer; text-decoration:none;
+    display:inline-flex; align-items:center; gap:10px; transition:background .15s, transform .15s;
+  }
+  .btn-primary:hover{background:var(--seal-dark); transform:translateY(-1px);}
+
+  footer{background:var(--paper); padding:52px 0 40px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:24px;}
+  .footer-tag{font-family:'Fraunces'; font-style:italic; font-size:16px; color:var(--ink-soft);}
+  .footer-links{display:flex; gap:28px; font-size:13.5px; color:var(--ink-soft);}
+  .footer-links a{text-decoration:none;}
+  .footer-links a:hover{color:var(--ink);}
+  .footer-bottom{margin-top:30px; font-size:12px; color:var(--ink-soft); font-family:'IBM Plex Mono'; letter-spacing:0.03em;}
+
+  @media (max-width: 880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-graphic{height:280px;}
+    .film-grid{grid-template-columns:1fr;}
+    .pillar-grid{grid-template-columns:1fr;}
+    .board-row{grid-template-columns:32px 1fr; row-gap:4px;}
+    .board-row .topics, .board-row .count{grid-column:2;}
+    .form-row{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-row">
+    <div class="wordmark"><span class="mark">SP</span> Sender Passport</div>
+    <nav class="nav-links">
+      <a href="#film">The Film</a>
+      <a href="#pillars">The Framework</a>
+      <a href="#boards">Discussion</a>
+      <a class="btn-charter" href="#signup">Get Updates</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="guilloche"></div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">A Standards Proposal</div>
+      <div class="eyebrow-sub">From the Choice Working Group</div>
+      <h1 class="headline">All data requires <em>a Universal Identity.</em></h1>
+      <p class="hero-tagline">It's America's Choice.</p>
+      <p class="lede">Right now, anyone can claim to be your bank, your granddaughter, your government — and nothing checks their papers before the message reaches you. We're building the credential system that changes that.</p>
+      <div class="form-card" id="signup">
+        <span class="label">Stay Informed — Email Verification Only</span>
+        <div class="form-row">
+          <input type="email" placeholder="you@example.com" aria-label="Email address">
+          <button type="button">Get Updates</button>
+        </div>
+        <p class="form-fineprint">We'll send a confirmation link. One click, no phone required.</p>
+      </div>
+    </div>
+
+    <div class="hero-graphic" role="img" aria-label="Illustration of a passport booklet with a verified stamp and a flight path">
+      <svg viewBox="0 0 490 380" xmlns="http://www.w3.org/2000/svg">
+        <path id="flightpath" d="M 20 70 C 120 30, 260 30, 430 90" fill="none" stroke="var(--line)" stroke-width="1.4" class="flight-dash"/>
+        <g class="plane-fly" style="offset-path:path('M 20 70 C 120 30, 260 30, 430 90');">
+          <path d="M0,-6 L6,4 L0,1 L-6,4 Z" fill="var(--gold)"/>
+        </g>
+
+        <g transform="translate(15,95) rotate(-4)">
+          <rect x="0" y="0" width="155" height="200" rx="6" fill="var(--paper-raised)" stroke="var(--line)" stroke-width="1.5"/>
+          <rect x="16" y="20" width="64" height="76" rx="3" fill="none" stroke="var(--ink-soft)" stroke-width="1.2"/>
+          <circle cx="48" cy="46" r="12" fill="none" stroke="var(--ink-soft)" stroke-width="1.2"/>
+          <path d="M32 82 q16 -14 32 0" fill="none" stroke="var(--ink-soft)" stroke-width="1.2"/>
+          <line x1="90" y1="26" x2="138" y2="26" stroke="var(--line)" stroke-width="2"/>
+          <line x1="90" y1="37" x2="138" y2="37" stroke="var(--line)" stroke-width="2"/>
+          <line x1="90" y1="48" x2="126" y2="48" stroke="var(--line)" stroke-width="2"/>
+          <line x1="16" y1="112" x2="138" y2="112" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="16" y1="126" x2="138" y2="126" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="16" y1="140" x2="118" y2="140" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="16" y1="162" x2="138" y2="162" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="16" y1="176" x2="100" y2="176" stroke="var(--line)" stroke-width="1.4"/>
+        </g>
+
+        <g transform="translate(168,105) rotate(3)">
+          <rect x="0" y="0" width="155" height="200" rx="6" fill="var(--paper)" stroke="var(--line)" stroke-width="1.5"/>
+          <rect x="14" y="16" width="54" height="54" fill="none" stroke="var(--line)" stroke-width="1.2"/>
+          <rect x="19" y="21" width="7" height="7" fill="var(--ink-soft)"/>
+          <rect x="30" y="21" width="4" height="7" fill="var(--ink-soft)"/>
+          <rect x="38" y="21" width="7" height="7" fill="var(--ink-soft)"/>
+          <rect x="19" y="32" width="4" height="7" fill="var(--ink-soft)"/>
+          <rect x="27" y="32" width="7" height="7" fill="var(--ink-soft)"/>
+          <rect x="38" y="32" width="4" height="7" fill="var(--ink-soft)"/>
+          <rect x="19" y="43" width="7" height="7" fill="var(--ink-soft)"/>
+          <rect x="34" y="43" width="7" height="7" fill="var(--ink-soft)"/>
+          <line x1="82" y1="24" x2="138" y2="24" stroke="var(--line)" stroke-width="2"/>
+          <line x1="82" y1="36" x2="138" y2="36" stroke="var(--line)" stroke-width="2"/>
+          <line x1="82" y1="48" x2="118" y2="48" stroke="var(--line)" stroke-width="2"/>
+          <line x1="14" y1="86" x2="138" y2="86" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="14" y1="100" x2="138" y2="100" stroke="var(--line)" stroke-width="1.4"/>
+          <line x1="14" y1="114" x2="110" y2="114" stroke="var(--line)" stroke-width="1.4"/>
+        </g>
+
+        <g class="sunburst" transform="translate(415,195)">
+          <g stroke="var(--seal)" stroke-width="1" opacity="0.3">
+            <line x1="0" y1="-82" x2="0" y2="-67"/>
+            <line x1="0" y1="82" x2="0" y2="67"/>
+            <line x1="-82" y1="0" x2="-67" y2="0"/>
+            <line x1="82" y1="0" x2="67" y2="0"/>
+            <line x1="-58" y1="-58" x2="-47" y2="-47"/>
+            <line x1="58" y1="-58" x2="47" y2="-47"/>
+            <line x1="-58" y1="58" x2="-47" y2="47"/>
+            <line x1="58" y1="58" x2="47" y2="47"/>
+            <line x1="-29" y1="-78" x2="-24" y2="-64"/>
+            <line x1="29" y1="-78" x2="24" y2="-64"/>
+            <line x1="-78" y1="29" x2="-64" y2="24"/>
+            <line x1="-78" y1="-29" x2="-64" y2="-24"/>
+            <line x1="78" y1="29" x2="64" y2="24"/>
+            <line x1="78" y1="-29" x2="64" y2="-24"/>
+            <line x1="-29" y1="78" x2="-24" y2="64"/>
+            <line x1="29" y1="78" x2="24" y2="64"/>
+          </g>
+        </g>
+
+        <g class="stamp-group" transform="translate(415,195)">
+          <circle r="62" fill="var(--paper)" stroke="var(--seal)" stroke-width="3"/>
+          <circle r="51" fill="none" stroke="var(--seal)" stroke-width="1"/>
+          <text x="0" y="-12" text-anchor="middle" class="stamp-text-svg" font-size="12.5" letter-spacing="1.6" fill="var(--seal)" font-weight="500">VERIFIED</text>
+          <text x="0" y="4" text-anchor="middle" class="stamp-text-svg" font-size="9.5" letter-spacing="1.2" fill="var(--seal)" opacity="0.9">PASSPORT CHECK</text>
+          <text x="0" y="20" text-anchor="middle" class="stamp-text-svg" font-size="8" letter-spacing="0.9" fill="var(--seal)" opacity="0.8">SENDER · IDENTITY</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="perforation on-raised"></div>
+
+<section class="film-section" id="film">
+  <div class="wrap film-grid">
+    <div class="section-head">
+      <div class="section-eyebrow">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4L14 4M2 8L14 8M2 12L9 12" stroke="var(--seal)" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Watch First
+      </div>
+      <h2 class="section-title">Why identity needs a border check</h2>
+      <p class="section-sub">A 4-minute film on why spoofing still works, and what it would take to stop it — told through a fake passport, and two calls that never should have been trusted.</p>
+    </div>
+    <div class="doc-frame">
+      <div class="doc-frame-top">
+        <span>FILM · SENDER PASSPORT</span>
+        <span>NO. 001</span>
+      </div>
+      <div class="video-shell" role="button" tabindex="0" aria-label="Play the Sender Passport explainer film">
+        <div class="guilloche"></div>
+        <svg class="globe-deco" width="220" height="220" viewBox="0 0 220 220" fill="none">
+          <circle cx="110" cy="110" r="90" stroke="#F5F1E6" stroke-width="1"/>
+          <ellipse cx="110" cy="110" rx="90" ry="34" stroke="#F5F1E6" stroke-width="1"/>
+          <ellipse cx="110" cy="110" rx="34" ry="90" stroke="#F5F1E6" stroke-width="1"/>
+        </svg>
+        <div class="play-btn">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M8 5L21 13L8 21V5Z" fill="#182238"/></svg>
+        </div>
+        <div class="video-caption">4 min · The Explainer<strong>Every Message Deserves a Passport</strong></div>
+      </div>
+      <div class="doc-frame-bottom">
+        <span>Directed for a general audience — no technical background required.</span>
+        <span class="runtime-chip">04:12</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars" id="pillars">
+  <div class="guilloche" style="opacity:0.08;"></div>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="5" height="5" stroke="var(--seal)" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" stroke="var(--seal)" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" stroke="var(--seal)" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" stroke="var(--seal)" stroke-width="1.2"/></svg>
+        The Framework
+      </div>
+      <h2 class="section-title">Three pieces, one passport</h2>
+      <p class="section-sub">The same way a passport only works because of the document, the office that issues it, and the border guards who check it — this only works if all three hold together.</p>
+    </div>
+    <div class="pillar-grid">
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 3L22 6.5V12C22 18 18 22 13 23.5C8 22 4 18 4 12V6.5L13 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13 8C13 8 10.5 9 10.5 11.5C10.5 13.5 12 13.5 12 15C12 16.5 10.5 17 10.5 17M13 8C13 8 15.5 9 15.5 11.5C15.5 13.5 14 13.5 14 15C14 16.5 15.5 17 15.5 17" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="pillar-entry">ENTRY 01 · TECHNICAL</div>
+        <h3>The Technical Piece</h3>
+        <p>The credential itself, and the system that checks it instantly on every call, email, and text — before it ever reaches you.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 4V21M8 21H18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M13 6L6 9M13 6L20 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 9L6 9L4.5 13.5C4.5 13.5 3.5 15 6 15C8.5 15 7.5 13.5 7.5 13.5L6 9" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M19 9L22 9L20.5 13.5C20.5 13.5 19.5 15 22 15C24.5 15 23.5 13.5 23.5 13.5L22 9" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="pillar-entry">ENTRY 02 · REGULATORY</div>
+        <h3>The Regulatory Piece</h3>
+        <p>Who runs the passport office. A governance model that stays trustworthy across every country, carrier, and platform.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">
+          <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="9.5" stroke="currentColor" stroke-width="1.5"/><ellipse cx="13" cy="13" rx="9.5" ry="4" stroke="currentColor" stroke-width="1.3"/><path d="M13 3.5V22.5M4 13H22" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
+        <div class="pillar-entry">ENTRY 03 · INDUSTRY</div>
+        <h3>The Industry Piece</h3>
+        <p>Getting every carrier, inbox, and messaging app to actually check the passport at the gate — the same way every airport does.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="perforation on-dark"></div>
+
+<section class="boards" id="boards">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow" style="justify-content:center;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8C2 4.7 4.7 2 8 2C11.3 2 14 4.7 14 8C14 11.3 11.3 14 8 14" stroke="#D8A79B" stroke-width="1.4"/><path d="M8 14C6 14 4 12 4 8C4 4 6 2 8 2" stroke="#D8A79B" stroke-width="1.4"/><path d="M2.5 6H13.5M2.5 10H13.5" stroke="#D8A79B" stroke-width="1.2"/></svg>
+        Join the Conversation
+      </div>
+      <h2 class="section-title">Discussion boards, for verified members</h2>
+      <p class="section-sub">Every participant clears the same kind of check this project is proposing for messages — it's the framework, demonstrated.</p>
+    </div>
+
+    <div class="board-panel">
+      <div class="board-panel-head">
+        <span>DISCUSSION BOARDS · 4 ACTIVE</span>
+        <span class="verify-badge">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6L5 9L10 3" stroke="#31593F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Email + Phone Verified
+        </span>
+      </div>
+      <ul class="board-list">
+        <li class="board-row">
+          <span class="board-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M1 8.5L6 5.5V11L1 8.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M6 5.5L13 3V13L6 11" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="name">General</span>
+          <span class="topics">Announcements · Introductions · Newcomer questions</span>
+          <span class="count">Open</span>
+        </li>
+        <li class="board-row">
+          <span class="board-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><rect x="4" y="4" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M7.5 1V4M7.5 11V14M1 7.5H4M11 7.5H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </span>
+          <span class="name">Technical</span>
+          <span class="topics">Credential system · Verification protocol · Key management</span>
+          <span class="count">3 subtopics</span>
+        </li>
+        <li class="board-row">
+          <span class="board-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M7.5 2V13M4 13H11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M7.5 3.5L3 5.5M7.5 3.5L12 5.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M1.5 5.5L3 5.5L2 8C2 8 3 9 4 8L3 5.5" stroke="currentColor" stroke-width="1"/><path d="M11 5.5L12.5 5.5L11.5 8C11.5 8 12.5 9 13.5 8L12.5 5.5" stroke="currentColor" stroke-width="1"/></svg>
+          </span>
+          <span class="name">Regulatory</span>
+          <span class="topics">Governance structure · Cross-border policy · Prior frameworks</span>
+          <span class="count">3 subtopics</span>
+        </li>
+        <li class="board-row">
+          <span class="board-icon">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.2"/><ellipse cx="7.5" cy="7.5" rx="5.5" ry="2.3" stroke="currentColor" stroke-width="1"/><path d="M7.5 2V13M2 7.5H13" stroke="currentColor" stroke-width="1"/></svg>
+          </span>
+          <span class="name">Industry Adoption</span>
+          <span class="topics">Carrier onboarding · Platform integration · Incentives</span>
+          <span class="count">3 subtopics</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="boards-cta">
+      <a class="btn-primary" href="#">
+        Verify &amp; Join the Discussion
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>
+        <div class="wordmark" style="margin-bottom:8px;">Sender Passport</div>
+        <div class="footer-tag">It's America's Choice.</div>
+      </div>
+      <div class="footer-links">
+        <a href="#film">The Film</a>
+        <a href="#pillars">The Framework</a>
+        <a href="#boards">Discussion</a>
+        <a href="#signup">Get Updates</a>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 SENDER PASSPORT PROJECT — A PROPOSAL FOR VERIFIED SENDER IDENTITY</div>
+  </div>
+</footer>
+
+</body>
+</html>
