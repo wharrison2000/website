@@ -279,24 +279,24 @@
   </header>
 
   <section>
-    <h2>The gap today</h2>
-    <p>Automated senders — AI-driven call bots, message bots, and content-generating accounts — currently look identical to legitimate traffic at the network level. There's no equivalent of a "return address" that a receiver, ISP, or platform can check before deciding whether to let a bot-originated message or an actual call coming through. A Universal Identity certificate closes that gap by attaching a verifiable, revocable identity claim to the sender, and by requiring that claim to disclose whether the sender is an automated system.</p>
+    <h2>The Gap Today</h2>
+    <p>Automated senders — AI-driven call bots, message bots, and content-generating accounts — currently look identical to legitimate traffic at the network level. There's no equivalent of a "return address" that a receiver, ISP, or platform can check before deciding whether to let a bot-originated message or an actual call coming through. A Universal Identity certificate closes that gap by attaching a verifiable, revocable identity claim to the senders data, and by requiring that claim to verifed by enduser whether the sender is legtimate or not.</p>
   </section>
 
   <section>
-    <h2>How enforcement plays out at the edge</h2>
+    <h2>How enforcement plays out at the Enduser edge</h2>
     <div class="flow-grid">
       <div class="flow-step">
         <div class="flow-num">1</div>
         <div>
           <h3>Sender presents a certificate</h3>
-          <p>Every outbound call, message, or automated request carries a certificate issued through the global CA hierarchy and an ISP sub-CA, including a disclosed attestation of whether the sender is a bot, a verified business system, or a human.</p>
+          <p>Every outbound call, message, or data request carries a certificate issued through the global CA hierarchy and an ISP sub-CA, including a disclosed attestation of whether the sender is legimate, a verified business system, or a bot that is not.</p>
         </div>
       </div>
       <div class="flow-step">
         <div class="flow-num">2</div>
         <div>
-          <h3>Gateway checks the attestation and revocation status</h3>
+          <h3> The Enduser gateway checks the certificate and possible revocation status</h3>
           <p>The ISP-issued home gateway (modem, cellular gateway, cable box) checks the certificate's trust tier and revocation status centrally, the same way it would for any sender — no extra hardware required in the home.</p>
         </div>
       </div>
@@ -332,10 +332,10 @@
       <div class="compare-cell good">
         <h3>With a Universal Identity certificate</h3>
         <ul>
-          <li>Every sender carries a disclosed, verifiable trust tier</li>
+          <li>Every sender carries a disclosed, verifiable trust certificate</li>
           <li>Receivers can choose to filter or deprioritize undisclosed automation</li>
           <li>Revocation is shared across ISPs, closing the re-registration loophole</li>
-          <li>Enforcement happens at the edge, before traffic reaches the receiver</li>
+          <li>Enforcement happens at the endusers edge, before traffic reaches the receiver</li>
         </ul>
       </div>
     </div>
