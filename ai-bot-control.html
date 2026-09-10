@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controlling AI Bots — Sender Identity Verification Project</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --ink: #1c2230;
+    --ink-soft: #4a5266;
+    --paper: #f7f5f0;
+    --panel: #ffffff;
+    --line: #d8d3c6;
+    --accent: #8a1f2b;
+    --accent-soft: #f1e2e0;
+    --gold: #a9822f;
+  }
+
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(236,231,216,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-row{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px; max-width:1180px; margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Fraunces', serif; font-weight:700; font-size:19px;
+    letter-spacing:0.01em; display:flex; align-items:center; gap:10px;
+    text-decoration:none; color:var(--ink);
+  }
+  .wordmark .mark{
+    width:26px; height:26px; border-radius:50%; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .wordmark .mark img{
+    width:100%; height:100%; object-fit:contain; display:block;
+  }
+  .nav-links{display:flex; align-items:center; gap:28px; font-size:14.5px;}
+  .nav-links a{text-decoration:none; color:var(--ink-soft); transition:color .15s;}
+  .nav-links a:hover{color:var(--ink);}
+  .btn-charter{
+    border:1px solid var(--ink); padding:9px 18px; border-radius:3px;
+    font-size:13.5px; letter-spacing:0.02em; text-decoration:none; color:var(--ink);
+    font-weight:500; transition:all .18s;
+  }
+  .btn-charter:hover{background:var(--ink); color:var(--paper);}
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.55;
+  }
+
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 24px 100px;
+  }
+
+  header.masthead {
+    border-bottom: 3px solid var(--ink);
+    padding: 56px 0 28px;
+    margin-bottom: 48px;
+  }
+
+  .kicker {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 5vw, 3.1rem);
+    line-height: 1.08;
+    margin: 0 0 18px;
+    max-width: 18ch;
+  }
+
+  .dek {
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  nav.crumbs {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  nav.crumbs a { color: var(--ink-soft); }
+
+  section { margin-bottom: 56px; }
+
+  h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+  }
+
+  h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+  }
+
+  p { max-width: 68ch; }
+
+  .stat-band {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    margin-bottom: 8px;
+  }
+
+  .stat-cell {
+    background: var(--panel);
+    padding: 26px 20px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 700;
+    font-size: 2.1rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .stat-note {
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    max-width: 68ch;
+  }
+
+  .flow-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--line);
+  }
+
+  .flow-step {
+    background: var(--panel);
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .flow-step:last-child { border-bottom: none; }
+
+  .flow-num {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--accent);
+  }
+
+  .flow-step h3 { margin: 0 0 6px; }
+  .flow-step p { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .compare-cell {
+    background: var(--panel);
+    padding: 22px;
+  }
+
+  .compare-cell.bad { border-top: 3px solid var(--accent); }
+  .compare-cell.good { border-top: 3px solid var(--gold); }
+
+  .compare-cell h3 { margin-top: 0; }
+  .compare-cell ul { margin: 0; padding-left: 18px; font-size: 0.92rem; color: var(--ink-soft); }
+  .compare-cell li { margin-bottom: 8px; }
+
+  .cta-panel {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 44px 40px;
+  }
+
+  .cta-panel h2 {
+    color: var(--paper);
+    border-bottom: 1px solid rgba(247,245,240,0.25);
+    font-size: 1.5rem;
+  }
+
+  .cta-panel p { color: #d8d5cc; max-width: 60ch; }
+
+  .cta-btn {
+    display: inline-block;
+    margin-top: 12px;
+    margin-right: 12px;
+    padding: 14px 28px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    background: var(--gold);
+    color: var(--ink);
+    border: 1px solid var(--gold);
+  }
+
+  footer {
+    border-top: 3px solid var(--ink);
+    padding-top: 24px;
+    margin-top: 64px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  footer .sources { margin-top: 14px; font-size: 0.8rem; }
+  footer .sources ul { padding-left: 18px; margin: 6px 0 0; }
+
+  @media (max-width: 640px) {
+    .stat-band { grid-template-columns: 1fr; }
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav-row">
+    <a href="index.html" class="wordmark"><span class="mark"><img src="Stamplogo.jpg" alt="Sender Passport logo"></span> Sender Verified</a>
+  <nav class="nav-links">
+  <a href="index.html#film">How it works</a>
+  <a href="index.html#pillars">A Framework</a>
+  <a href="index.html#boards">Discussion</a>
+  <a href="founders.html">Founders</a>
+  <a href="fraud-problem.html">The Problem</a>
+  <a href="ai-bot-control.html">AI</a>
+  <a href="resources.html">Links</a>
+  <a class="btn-charter" href="index.html#signup">Get Updates</a>
+</nav>
+  </div>
+</header>
+<div class="wrap">
+
+  <header class="masthead">
+    <nav class="crumbs"><a href="fraud-problem.html">The problem</a> &nbsp;/&nbsp; <a href="founders.html">Founders</a> &nbsp;/&nbsp; Controlling AI bots</nav>
+    <div class="kicker">Sender identity verification project</div>
+    <h1>What a Universal Identity certificate does to AI bot traffic</h1>
+    <p class="dek">The same certificate architecture built to stop spoofed calls and emails also gives networks a way to tell a verified human or disclosed-bot sender from an anonymous automated one — before that traffic ever reaches you.</p>
+  </header>
+
+  <section>
+    <h2>The gap today</h2>
+    <p>Automated senders — AI-driven call bots, message bots, and content-generating accounts — currently look identical to legitimate traffic at the network level. There's no equivalent of a "return address" that a receiver, ISP, or platform can check before deciding whether to let a bot-originated message or call through. A Universal Identity certificate closes that gap by attaching a verifiable, revocable identity claim to the sender, and by requiring that claim to disclose whether the sender is an automated system.</p>
+  </section>
+
+  <section>
+    <h2>How enforcement plays out at the edge</h2>
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div>
+          <h3>Sender presents a certificate</h3>
+          <p>Every outbound call, message, or automated request carries a certificate issued through the global CA hierarchy and an ISP sub-CA, including a disclosed attestation of whether the sender is a bot, a verified business system, or a human.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div>
+          <h3>Gateway checks the attestation and revocation status</h3>
+          <p>The ISP-issued home gateway (modem, cellular gateway, cable box) checks the certificate's trust tier and revocation status centrally, the same way it would for any sender — no extra hardware required in the home.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div>
+          <h3>Undisclosed or unverifiable bot traffic is flagged or dropped</h3>
+          <p>Automated traffic that fails to disclose itself as a bot, or that presents no valid certificate at all, is treated the same as spoofed traffic under the fail-closed model — flagged, deprioritized, or dropped depending on the trust tier the receiver has chosen.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div>
+          <h3>Abusive bot certificates get revoked network-wide</h3>
+          <p>A bot certificate that crosses the abuse threshold — spam volume, fraud complaints, scraping violations — gets added to the shared cross-ISP revoked-sender database, so it's blocked everywhere at once rather than ISP by ISP.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Before and after</h2>
+    <div class="compare-grid">
+      <div class="compare-cell bad">
+        <h3>Without a Universal Identity certificate</h3>
+        <ul>
+          <li>Bots and humans are indistinguishable at the network layer</li>
+          <li>No standard way to disclose automated origin</li>
+          <li>Bad actors re-register and reappear instantly after being blocked</li>
+          <li>Enforcement is reactive and platform-by-platform</li>
+        </ul>
+      </div>
+      <div class="compare-cell good">
+        <h3>With a Universal Identity certificate</h3>
+        <ul>
+          <li>Every sender carries a disclosed, verifiable trust tier</li>
+          <li>Receivers can choose to filter or deprioritize undisclosed automation</li>
+          <li>Revocation is shared across ISPs, closing the re-registration loophole</li>
+          <li>Enforcement happens at the edge, before traffic reaches the receiver</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="cta-panel">
+      <h2>Extending the framework to AI bot traffic</h2>
+      <p>This builds directly on the STIR-SHAKEN-style attestation and revocation model already proposed for calls and messages — extending trust-tier attestation to explicitly cover disclosed automated senders. Get involved or read the full technical framework.</p>
+      <a class="cta-btn" href="fraud-problem.html">Read the problem statement</a>
+      <a class="cta-btn" href="support-us.html">Support this work</a>
+    </div>
+  </section>
+
+  <footer>
+    <div style="margin-bottom:16px;"><a href="fraud-problem.html">The problem</a> &nbsp;|&nbsp; <a href="founders.html">Founders</a> &nbsp;|&nbsp; <a href="contact.html">Contact us</a> &nbsp;|&nbsp; <a href="support-us.html">Support us</a></div>
+  </footer>
+
+</div>
+</body>
+</html>
